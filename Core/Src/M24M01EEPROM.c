@@ -20,5 +20,5 @@ void M24M01EEPROMInit(I2C_HandleTypeDef i2c)
 
 void EEPROMReadManufacturerCode(uint8_t *pData, uint16_t length)
 {
-	HAL_I2C_Mem_Read(&hi2c1, deviceIdentAddress, 0x00, I2C_MEMADD_SIZE_16BIT, pData, length, HAL_MAX_DELAY);
+	HAL_I2C_Mem_Read(&hi2c1, deviceIdentAddress, 0x02, I2C_MEMADD_SIZE_16BIT, pData, length, HAL_MAX_DELAY);
 }

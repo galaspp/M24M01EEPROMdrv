@@ -46,8 +46,8 @@ M24M01EEPROMdrv.bin \
 all: M24M01EEPROMdrv.elf secondary-outputs
 
 # Tool invocations
-M24M01EEPROMdrv.elf: $(OBJS) $(USER_OBJS) C:\Users\My\ Computer\Desktop\Repos\M24M01EEPROMdrv\STM32F413CGUX_FLASH.ld
-	arm-none-eabi-gcc -o "M24M01EEPROMdrv.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\My Computer\Desktop\Repos\M24M01EEPROMdrv\STM32F413CGUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="M24M01EEPROMdrv.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+M24M01EEPROMdrv.elf: $(OBJS) $(USER_OBJS) /home/piotr/Desktop/Repos/M24M01EEPROMdrv/STM32F413CGUX_FLASH.ld
+	arm-none-eabi-gcc -o "M24M01EEPROMdrv.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/piotr/Desktop/Repos/M24M01EEPROMdrv/STM32F413CGUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="M24M01EEPROMdrv.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -1,0 +1,2 @@
+M24M01EEPROM.c:14:6:M24M01EEPROMInit	8	static
+M24M01EEPROM.c:21:6:EEPROMReadManufacturerCode	32	static

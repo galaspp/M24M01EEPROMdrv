@@ -108,7 +108,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  EEPROMReadManufacturerCode(eepromData, 1);
-	  if(eepromData[0] == 0x20)
+	  if(eepromData[0] == 0x11)
 		  while(1);
 	  handleHeartbeatLED(GPIOC, GPIO_PIN_13);
   }
