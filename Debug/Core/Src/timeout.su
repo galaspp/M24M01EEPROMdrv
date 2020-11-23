@@ -1,0 +1,11 @@
+timeout.c:16:6:initTimeout	16	static
+timeout.c:26:10:getTimeoutMS	4	static
+timeout.c:31:6:addTimeoutMS	16	static
+timeout.c:42:6:clearTimeutMS	4	static
+timeout.c:47:10:getTimeoutUS	4	static
+timeout.c:52:6:addTimeoutUS	16	static
+timeout.c:63:6:clearTimeutUS	4	static
+timeout.c:68:6:hasTimedOut	16	static
+timeout.c:78:6:hasTimedOutUS	16	static
+timeout.c:88:6:handleHeartbeatLED	16	static
+timeout.c:97:6:HAL_TIM_PeriodElapsedCallback	16	static
