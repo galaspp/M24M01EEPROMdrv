@@ -61,7 +61,9 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t eepromData[1];
+uint8_t STCode[1];
+uint8_t I2CCode[1];
+uint8_t DensityCode[1];
 /* USER CODE END 0 */
 
 /**
@@ -107,9 +109,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  EEPROMReadManufacturerCode(eepromData, 1);
-	  if(eepromData[0] == 0x11)
-		  while(1);
+	  //Read Identification Code from Table 4 of datasheet
+	  EEPROMReadIdentificationCodes(STCode, I2CCode, DensityCode);
+
+	  //Check if data is correct
+	  if(STCode[0] != 0x20) while(1);
+	  if(I2CCode[0] != 0xE0) while(1);
+	  if(DensityCode[0] != 0x11) while(1);
+
 	  handleHeartbeatLED(GPIOC, GPIO_PIN_13);
   }
   /* USER CODE END 3 */
