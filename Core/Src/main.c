@@ -17,7 +17,6 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
@@ -64,6 +63,12 @@ static void MX_TIM2_Init(void);
 uint8_t STCode[1];
 uint8_t I2CCode[1];
 uint8_t DensityCode[1];
+
+uint8_t writeData1[1] = {0x10};
+uint8_t writeData2[20];
+
+uint8_t readData1[1];
+uint8_t readData2[20];
 /* USER CODE END 0 */
 
 /**
@@ -99,6 +104,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
   initTimeout(&htim2);
   M24M01EEPROMInit(hi2c1);
+
+  for(int i = 0; i < 20; i++)
+  {
+	  writeData2[i] = i;
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,7 +127,24 @@ int main(void)
 	  if(I2CCode[0] != 0xE0) while(1);
 	  if(DensityCode[0] != 0x11) while(1);
 
-	  handleHeartbeatLED(GPIOC, GPIO_PIN_13);
+	  while(HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY);
+	  if(!EEPROMWriteData(writeData1, 0x0000, 1)) while(1);
+	  HAL_Delay(1);
+	  while(HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY);
+	  if(EEPROMReadData(readData1, 0x0000, 1))
+	  {
+		  if(readData1[0] != 0x10) while(1);
+		  handleHeartbeatLED(GPIOC, GPIO_PIN_13);
+	  }
+
+	  if(!EEPROMWriteData(writeData2, 0x0001, 20)) while(1);
+	  HAL_Delay(1);
+	  if(EEPROMReadData(readData2, 0x0001, 20))
+	  {
+		  if(readData2[1] != 0x01) while(1);
+		  handleHeartbeatLED(GPIOC, GPIO_PIN_13);
+	  }
+//	  if(!EEPROMReadData(readData2, 0x0001, 20)) while(1);
   }
   /* USER CODE END 3 */
 }
@@ -135,7 +162,8 @@ void SystemClock_Config(void)
   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  /** Initializes the CPU, AHB and APB busses clocks
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
@@ -150,7 +178,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks
+  /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -262,12 +290,22 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
